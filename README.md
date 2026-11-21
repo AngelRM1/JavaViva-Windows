@@ -142,14 +142,48 @@ por juego.
 - Textos clave verificados dentro del .exe (UTF-16): compatrepaintonsetcurrent,
   FreeJ2ME-Plus, ifone.png / glu.png, freej2me_plus.jar, Adoptium.
 
-## Recompilar
-En Windows con .NET 8 SDK instalado, o en Linux con el SDK:
+## Compilar desde el código fuente
+
+Este repositorio trae solo el código del launcher (`src/`, C#).
+Compilarlo es fácil, pero el `.exe` que sale **no juega solo**: necesita
+al lado el motor y un Java, que no están en el repo (vienen en el ZIP
+del release).
+
+### 1. Compilar el launcher
+
+Necesitas el **.NET 8 SDK** (gratis, de Microsoft:
+https://dotnet.microsoft.com/download/dotnet/8.0). En Windows con el
+SDK instalado, o en Linux con el SDK:
+
 ```
 cd src
 dotnet publish -r win-x64 -c Release -o ../publish
 ```
+
 El proyecto es `src/JavaViva.csproj` (`net8.0-windows`, WinForms,
-`EnableWindowsTargeting=true` para compilar desde Linux).
+`EnableWindowsTargeting=true` para compilar desde Linux). El resultado
+es `publish/JavaViva.exe`, un solo archivo autocontenido (no necesita
+tener .NET instalado para correr).
+
+### 2. Para que el .exe pueda jugar: el motor y Java
+
+Copia junto al `.exe` estas dos carpetas (o usa las del ZIP del
+release):
+
+- **El motor:** `engine/freej2me_plus.jar` — FreeJ2ME-Plus v1.53, desde
+  su página de Releases en GitHub:
+  https://github.com/hex007/freej2me/releases. Sin este archivo
+  JavaViva avisa que no encontró el motor.
+- **Un Java:** JavaViva lo busca en este orden: `runtime/windows-x64/`
+  junto al `.exe` (un JRE Temurin 21 descomprimido ahí, con
+  `bin/java.exe` dentro), el Java de tu PC (PATH o Program Files), o
+  uno elegido a mano en Configuración. Si no hay ninguno, avisa que no
+  se encontró Java. Descarga gratis: Adoptium Temurin JRE 21 para
+  Windows x64 — https://adoptium.net/temurin/releases/.
+
+Con eso, el `.exe` compilado juega igual que el del release. Y si solo
+quieres usar JavaViva sin compilar nada, descarga el ZIP del release
+v1.0.2, que ya trae todo junto.
 
 ## Ideas para v1.1 (si quieres seguir)
 - Probar con KEmulator nnmod como segundo motor para los juegos que
