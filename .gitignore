@@ -1,0 +1,13 @@
+# .NET / C# — salidas de compilación y publicación (no van al repo)
+bin/
+obj/
+publish/
+runtime-tmp/
+engine-tmp/
+downloads/
+
+# Paquetes y artefactos locales
+*.zip
+*.user
+*.suo
+.vs/
