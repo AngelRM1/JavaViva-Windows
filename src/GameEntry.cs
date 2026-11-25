@@ -20,6 +20,7 @@ namespace JavaViva
         public string AutoResolution { get; set; } = ""; // detectada del .jar, ej. "240x320"
         public string AutoHow { get; set; } = "";        // como se detecto
         public DateTime? LastPlayed { get; set; }
+        public bool IsFavorite { get; set; } = false; // v1.1.5: favorito de la biblioteca
 
         // Configuracion por juego (la del panel Configuracion)
         public string ResolutionMode { get; set; } = "Auto"; // Auto | Preset | Custom
@@ -295,6 +296,28 @@ namespace JavaViva
             Directory.CreateDirectory(AppDir);
             var json = JsonSerializer.Serialize(games, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(LibraryPath, json);
+        }
+
+        /// <summary>v1.1.3: la lista guardada acumulaba entradas de carpetas
+        /// viejas (cada version descomprimida era otra ruta) y de archivos
+        /// que ya no existen: se veian juegos sin haber .jar y duplicados
+        /// (el mismo juego 2-3 veces). Quita las entradas sin archivo y
+        /// deja solo una por nombre de archivo, prefiriendo la de la
+        /// carpeta Juegos actual. Devuelve la lista limpia.</summary>
+        public static List<GameEntry> PruneStale(List<GameEntry> games, string baseDir)
+        {
+            var gamesDir = GamesDir(baseDir);
+            var seenPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var seenNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var kept = new List<GameEntry>();
+            foreach (var g in games.Where(g => File.Exists(g.FilePath))
+                .OrderByDescending(g => g.FilePath.StartsWith(gamesDir, StringComparison.OrdinalIgnoreCase)))
+            {
+                if (!seenPaths.Add(g.FilePath)) continue;
+                if (!seenNames.Add(Path.GetFileName(g.FilePath))) continue;
+                kept.Add(g);
+            }
+            return kept;
         }
 
         public static GameEntry Upsert(List<GameEntry> games, GameEntry g)

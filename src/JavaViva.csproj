@@ -9,9 +9,9 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <AssemblyName>JavaViva</AssemblyName>
     <RootNamespace>JavaViva</RootNamespace>
-    <Version>1.0.2</Version>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.1.7</Version>
+    <AssemblyVersion>1.1.7.0</AssemblyVersion>
+    <FileVersion>1.1.7.0</FileVersion>
     <Company>Nous Logic</Company>
     <Product>JavaViva - Juegos Java .jar como en tu celular de los 2000</Product>
     <Description>Launcher para Windows de juegos J2ME (.jar/.jad) con motor FreeJ2ME-Plus v1.53. Biblioteca, resolucion automatica o manual, perfiles de telefono y ajustes de compatibilidad por juego.</Description>
