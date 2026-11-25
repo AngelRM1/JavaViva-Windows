@@ -1,193 +1,85 @@
-# JavaViva v1.0.2 — Juegos Java .jar como en tu celular de los 2000
+# JavaViva — Tus juegos Java de los 2000, en tu PC
 
-> **v1.0.2 (2026-11-19) — corrección de la revisión de Windows: los 3
-> errores graves, el sonido y la validación de .jar.**
-> 1. El `game.conf` se escribía en la carpeta equivocada (con guiones
-> bajos) y el motor lo ignoraba en silencio para Age of Empires y
-> Carbon. Ahora se escribe también en `config/<MIDlet-Name tal cual>/`.
-> 2. Los botones de dígitos del teclado en pantalla enviaban la tecla
-> de la fila superior y el motor la ignoraba. Ahora envían
-> `{NUMPADn}`: acelerar con el 5 en NFS ya funciona.
-> 3. Los perfiles "Nokia", "Motorola V8", "Motorola A1000" y "Nokia
-> Full Keyboard" no existen para el motor (son solo etiquetas de su
-> GUI). Ahora se escriben sus valores internos: `NokiaKeyboard`,
-> `MotoV8`, `MotoA1000`. Las bibliotecas viejas se migran solas.
-> Además: cambiar Sonido ya se aplica (antes solo la primera vez),
-> los .jar corruptos o sin manifiesto se rechazan con el motivo, el
-> java.exe elegido a mano ya se guarda al cerrar, Jugar ya aplica los
-> cambios de Configuración sin pulsar Guardar, y un `library.json`
-> corrupto ya no vacía la biblioteca en silencio (se guarda copia).
-> Pendiente, no en esta versión: mantener pulsado un botón del teclado
-> para acelerar, y la tabla de teclas ya no promete Espacio/X/Ctrl+C.
->
-> **v1.0.1 (2026-11-18) — se corrige que ningún juego se viera: faltaba
-> el argumento de pantalla completa en la línea de comandos.**
-> FreeJ2ME-Plus v1.53 espera `java -jar freej2me_plus.jar <juego>
-> <fullscreen 0/1> <ancho> <alto> <escala>` (constructor de
-> FreeJ2ME.java: args[0]=jar, args[1]=fullscreen, args[2]=ancho,
-> args[3]=alto, args[4]=escala; tras cargar, scrwidth=args[argLen-2],
-> scrheight=args[argLen-1]). La v1.0 pasaba `[juego, ancho, alto,
-> escala]`, así que el ancho caía en el hueco de fullscreen y la LCD
-> quedaba en 220x2 para un juego 176x220 (pantalla negra, ventana
-> enana). Ahora se pasa `0` (ventana) entre el juego y la resolución.
-> El mismo bug estaba en JavaViva Web (corregido en su v1.8).
-Creado por **Nous Logic** — nouslogic.xyz
+JavaViva es un programa para Windows que vuelve a abrir tus juegos Java (`.jar`) de los móviles de los años 2000, como si los jugaras en tu Nokia, Sony Ericsson o Motorola de antes.
 
-## Qué es
-JavaViva es un launcher para Windows que ejecuta tus juegos y programas
-Java ME (J2ME) en archivos `.jar` / `.jad`, como si corrieran en un Nokia,
-Sony Ericsson o Motorola de los años 2000.
+**Descargar la última versión (v1.1.7):** https://github.com/AngelRM1/JavaViva-Windows/releases/latest
 
-No es un emulador hecho desde cero: usa como motor **FreeJ2ME-Plus v1.53**
-(GPLv3, de TASEmulators), el emulador J2ME más compatible hoy en PC, con
-soporte MIDP 2.0, 3D M3G (JSR-184) y Mascot Capsule. JavaViva pone encima
-la biblioteca, la detección automática de resolución y la configuración
-por juego.
+También hay una versión que corre en el navegador, sin instalar nada: https://interactivo.nouslogic.xyz/javaviva
 
-## Qué trae el paquete
-- `JavaViva.exe` — **155 MB, un solo archivo, autocontenido.** No necesita
-  instalar .NET. Es el recomendado. Doble clic y listo.
-- `engine/freej2me_plus.jar` — el motor FreeJ2ME-Plus v1.53.
-- `runtime/windows-x64/` — Java Temurin 21 incluido. **No necesitas
-  instalar Java aparte.** Si esa carpeta falta, JavaViva busca el Java
-  de tu PC o uno que elijas en Configuración.
-- `Juegos/` — aquí van tus `.jar` y `.jad`. Ya viene con
-  **Need_For_Speed_Most_Wanted.jar** (NFSMW, EA, MIDP 2.0, v1.0.2).
-- `src/` — código fuente completo en C# (.NET 8, WinForms).
+## Descargar e instalar
 
-## Cómo probarlo en tu PC (5 minutos)
-1. Descomprime el ZIP completo en una carpeta (el .exe solo no basta:
-   necesita `engine/` y `runtime/` al lado).
-2. Doble clic en `JavaViva.exe`.
-   > Windows SmartScreen puede avisar porque el .exe no tiene firma de
-   > pago. Es normal en un programa nuevo sin certificado. Pulsa
-   > "Más información" → "Ejecutar de todos modos" si confías en el origen.
-3. En **Biblioteca** ya debe aparecer **NFSMW** (Need for Speed Most
-   Wanted), con resolución auto **240x320**. Si no aparece, pulsa
-   **Refrescar carpeta Juegos**.
-4. Selecciónalo y pulsa **▶ Jugar**. Se abre la ventana del juego aparte.
-   - Si pregunta **Enable Sound?**, pulsa **Q** (Yes, tecla suave izquierda).
-   - En el menú, usa las **flechas** para moverte y **Enter** para aceptar.
-   - **Esc** abre el menú del emulador (resolución, sonido, salir).
-5. Si el juego se ve cortado, chico o en blanco: ciérralo y en
-   **Configuración** cambia la resolución (o usa los botones
-   **Probar rápido** en Biblioteca: 240x320, 176x208, 320x240...).
+1. Descarga el archivo ZIP (98 MB) desde el enlace de arriba.
+2. Descomprímelo en una carpeta de tu PC (clic derecho → Extraer todo). No es un instalador: no escribe nada en el sistema.
+3. Abre `JavaViva.exe` y listo. No necesitas instalar Java: el programa ya lleva el suyo incluido.
+4. Windows puede avisar con SmartScreen porque el programa no tiene firma de pago. Es normal en un programa nuevo. Si confías en el origen, pulsa "Más información" → "Ejecutar de todos modos".
 
-## Panel de Configuración (por juego)
-- **Pantalla:** Automática (recomendado), de la lista, o personalizada
-  (ancho x alto). La automática lee el .jar: busca `ifone.png` /
-  `glu.png` (su tamaño ES la resolución del juego) y si no, usa la
-  imagen más grande del .jar. NFS Most Wanted detecta 240x320.
-- **Escala de ventana:** 1x, 2x, 3x. **Girar pantalla:** 0°/90°/180°/270°.
-- **Límite FPS:** Auto (60), 60, 50 o 30. **Sonido** y **luz de fondo**
-  (verde Nokia clásico, cian, naranja, violeta, rojo).
-- **Perfil de teléfono:** Standard (casi todos), Nokia, Siemens,
-  Motorola Triplets / V8 / A1000, LG, Sagem, SKT, KDDI, Nokia Full
-  Keyboard. Cambia solo si el juego fue hecho para esa marca.
-- **Gráficos 3D (M3G):** media resolución 3D si va lento, antialiasing.
-- **Compatibilidad:** Repaint on setCurrent (NFS Most Wanted lo necesita,
-  si no se queda en pantalla blanca), Immediate repaints, Override
-  platform checks. JavaViva activa el arreglo de NFS Most Wanted solo.
-- **Java:** automático (runtime incluido), del sistema o elegido a mano.
-- Todo se guarda **por juego** y también se escribe en el `game.conf`
-  que FreeJ2ME-Plus lee (`config/<nombre>/game.conf` en los datos del
-  juego, en `%AppData%\JavaViva\datos\`). Los guardados del juego quedan
-  ahí, separados por juego.
+Requisitos: Windows 10 u 11 de 64 bits. El `.exe` solo no basta: necesita las carpetas `engine/` y `runtime/` que vienen en el ZIP, junto a él.
 
-## Teclas (pestaña 📱 Teclas)
-- **Q / W:** teclas suaves izquierda / derecha. **Flechas:** moverte.
-- **Enter o 5:** disparar / aceptar (en NFS, acelerar).
-- **1-9, 0:** teclas del teléfono. **E:** `*`, **R:** `#`, **A:** borrar.
-- **Esc:** menú del emulador. **Ctrl+C:** captura. **+ / -:** zoom.
-- **Espacio:** avance rápido. **X:** pausa.
-- En la pestaña Teclas hay un teclado del teléfono en pantalla: pulsa
-  un botón y JavaViva lleva la ventana del juego al frente y pulsa esa
-  tecla por ti.
+## Cómo jugar (5 minutos)
 
-## NFS Most Wanted: lo que se verificó
-- El .jar es la versión **240x320** (S60 v3 / S40 / Sony Ericsson):
-  manifiesto `MIDlet-Name: NFSMW, Vendor: Electronic Arts, MIDP-2.0,
-  v1.0.2`, 695 KB, y sus imágenes más grandes son de 240x320.
-  Usa 3D M3G (`scene_LoadM3GMesh`), que FreeJ2ME-Plus soporta.
-- **Arreglo aplicado:** `compatrepaintonsetcurrent=on` en el `game.conf`.
-  Sin él, el juego se queda en pantalla blanca (el valor por defecto del
-  emulador es `off`). JavaViva lo activa solo para este juego.
-- **No se pudo probar el juego corriendo en este entorno:** aquí no hay
-  Windows y la prueba en Linux se quedó sin librerías X11 (`libXtst`).
-  Por eso la prueba real en tu PC es el paso que falta: sigue la guía de
-  5 minutos y dime qué ves (menú, carreras, sonido) y si algo se ve
-  cortado o en blanco.
+1. En la pestaña **Biblioteca**, pulsa **Agregar .jar** y elige tu juego. También puedes copiar tus archivos `.jar` a la carpeta `Juegos/` y pulsar **Refrescar**.
+2. Elige el juego en la lista. La resolución se detecta sola; si se ve cortado, chico o en blanco, cámbiala en **Configuración** o con los botones de prueba rápida.
+3. Pulsa **▶ Jugar**. El juego se abre en su propia ventana.
+4. Si el juego pregunta "Enable Sound?", pulsa **Q** (la tecla suave izquierda).
+5. Usa las flechas para moverte y **Enter** para aceptar. **Esc** abre el menú del juego.
+
+La biblioteca empieza vacía: JavaViva no incluye juegos. Agrega solo archivos `.jar` que tengas legalmente (juegos que compraste, copias de respaldo de juegos que compraste, o juegos libres).
+
+## Teclas
+
+- **Q / W:** teclas suaves izquierda / derecha.
+- **Flechas:** moverte. **Enter o 5:** aceptar / disparar.
+- **1–9, 0:** teclas del teléfono. **E:** `*`, **R:** `#`, **A:** borrar.
+- **Esc:** menú del juego. **Espacio:** avance rápido. **X:** pausa. **+ / −:** zoom.
+- En la pestaña **Teclas** hay un teclado del teléfono en pantalla: pulsa un botón y el juego recibe esa tecla. También puedes cambiar qué tecla física hace cada cosa.
+
+## Tus juegos, favoritos y respaldos
+
+- **Favoritos:** marca tus juegos favoritos con la estrella; van primeros en la lista y puedes filtrar solo esos.
+- **Buscar:** escribe en la caja de búsqueda para encontrar un juego por nombre, fabricante o archivo.
+- **Captura de pantalla:** con un juego corriendo, pulsa el botón de captura y se guarda una foto de la ventana del juego en la carpeta `Capturas`.
+- **Respaldo:** en Biblioteca puedes exportar tu lista de juegos con sus ajustes a un archivo, e importarla después sin perder nada.
+- Tus juegos y ajustes se guardan en tu PC (en `%AppData%\JavaViva`). Nada se sube a ningún servidor.
+
+## Ajustes por juego
+
+Cada juego guarda sus propios ajustes: resolución (automática, de la lista o a tu medida), tamaño de ventana (1x, 2x, 3x), giro de pantalla, sonido, límite de imágenes por segundo, luz de fondo y perfil de teléfono (cámbialo solo si el juego fue hecho para esa marca). También hay opciones de compatibilidad para los juegos que fallan.
+
+## Si algo no funciona
+
+- **El juego se ve cortado, chico o en blanco:** ciérralo y prueba otra resolución en Configuración (o los botones de prueba rápida en Biblioteca).
+- **El juego se queda en blanco:** dentro del juego, pulsa Esc → Settings → Compatibility Settings y activa "Repaint on MIDP Display setCurrent".
+- **No arranca ningún juego:** revisa que las carpetas `engine/` y `runtime/` estén junto al `.exe`. Si falta Java, JavaViva lo avisa en el encabezado.
+- **No todos los juegos funcionan:** cada juego se hizo para un teléfono concreto. Prueba otra resolución o perfil de teléfono.
+
+## Actualizaciones
+
+Al abrir JavaViva, el programa revisa si hay una versión nueva. Si la hay, el botón "Buscar actualizaciones" del encabezado se pone verde: púlsalo y te lleva a la descarga. También puedes comprobarlo a mano con ese botón.
+
+## Donaciones (voluntarias)
+
+JavaViva es gratis y lo seguirá siendo. Si quieres apoyar el proyecto: PayPal (paypal.me/engelarm), Buy Me a Coffee (buymeacoffee.com/engelarm) o nouslogic.xyz/dona-un-cafe. Las donaciones no desbloquean nada: son solo apoyo.
 
 ## Límites honestos
-- No todos los juegos J2ME funcionan: cada uno fue hecho para un
-  teléfono concreto. Si uno no arranca, prueba otra resolución o perfil.
-- No convierte `.jar` a `.apk` ni a `.exe`, y no descarga juegos.
-- Usa solo `.jar` que tengas legalmente. Un `.jar` puede ejecutar código
-  en tu PC como cualquier programa: no ejecutes archivos de sitios raros.
 
-## Verificación hecha en esta entrega (2026-11-17, v1.0)
-- Compilado con .NET SDK 8.0.428 para `win-x64`: **0 errores,
-  0 advertencias**. El .exe es PE32+ GUI x86-64.
-- Lógica probada con el .jar real de NFS Most Wanted (programa de
-  prueba en C# con el mismo código del launcher): nombre NFSMW,
-  Electronic Arts, v1.0.2, MIDP-2.0, 711.272 bytes, resolución auto
-  240x320 (imagen mayor 240x323 → 240x320), arreglo repaint activado,
-  línea de comandos `java -jar freej2me_plus.jar
-  "file:///C:\Juegos\Need_For_Speed_Most_Wanted.jar" 0 240 320 2`
-  (el `0` de pantalla completa se añadió en v1.0.1; sin él la LCD
-  quedaba en 320x2).
-- `game.conf` generado verificado clave por clave contra el código
-  fuente de FreeJ2ME-Plus v1.53 (`Config.java`): todas las claves
-  existen y los valores por defecto coinciden.
-- Textos clave verificados dentro del .exe (UTF-16): compatrepaintonsetcurrent,
-  FreeJ2ME-Plus, ifone.png / glu.png, freej2me_plus.jar, Adoptium.
+- JavaViva es solo el programa (emulador): no incluye, descarga ni vende juegos.
+- No convierte `.jar` a `.apk` ni a `.exe`.
+- Un archivo `.jar` puede ejecutar código en tu PC como cualquier programa: usa solo archivos de fuentes en las que confíes.
+- Los juegos 3D van mejor en Windows que en el navegador, pero no todos los juegos corren: cada uno se hizo para un teléfono concreto.
 
-## Compilar desde el código fuente
+## Créditos
 
-Este repositorio trae solo el código del launcher (`src/`, C#).
-Compilarlo es fácil, pero el `.exe` que sale **no juega solo**: necesita
-al lado el motor y un Java, que no están en el repo (vienen en el ZIP
-del release).
+- Motor: FreeJ2ME-Plus v1.53 (GPLv3, código abierto) — https://github.com/hex007/freej2me
+- Java incluido: Temurin 21 (Adoptium).
+- Creado por NousLogic — https://nouslogic.xyz
 
-### 1. Compilar el launcher
+## Novedades
 
-Necesitas el **.NET 8 SDK** (gratis, de Microsoft:
-https://dotnet.microsoft.com/download/dotnet/8.0). En Windows con el
-SDK instalado, o en Linux con el SDK:
+- **v1.1.7:** sin sección de terminal; todos los botones del mismo tamaño; el aviso de nueva versión ahora está en el encabezado.
+- **v1.1.6:** el juego ya no aparece como "cerrado" mientras juegas; no se pueden correr dos juegos a la vez; la captura de pantalla funciona mientras juegas; las pestañas ya no se ven blancas.
+- **v1.1.5:** favoritos con estrella, búsqueda, captura de pantalla y respaldo de la biblioteca.
+- **v1.1.4:** aviso de nueva versión al abrir el programa.
 
-```
-cd src
-dotnet publish -r win-x64 -c Release -o ../publish
-```
+## Para desarrolladores
 
-El proyecto es `src/JavaViva.csproj` (`net8.0-windows`, WinForms,
-`EnableWindowsTargeting=true` para compilar desde Linux). El resultado
-es `publish/JavaViva.exe`, un solo archivo autocontenido (no necesita
-tener .NET instalado para correr).
-
-### 2. Para que el .exe pueda jugar: el motor y Java
-
-Copia junto al `.exe` estas dos carpetas (o usa las del ZIP del
-release):
-
-- **El motor:** `engine/freej2me_plus.jar` — FreeJ2ME-Plus v1.53, desde
-  su página de Releases en GitHub:
-  https://github.com/hex007/freej2me/releases. Sin este archivo
-  JavaViva avisa que no encontró el motor.
-- **Un Java:** JavaViva lo busca en este orden: `runtime/windows-x64/`
-  junto al `.exe` (un JRE Temurin 21 descomprimido ahí, con
-  `bin/java.exe` dentro), el Java de tu PC (PATH o Program Files), o
-  uno elegido a mano en Configuración. Si no hay ninguno, avisa que no
-  se encontró Java. Descarga gratis: Adoptium Temurin JRE 21 para
-  Windows x64 — https://adoptium.net/temurin/releases/.
-
-Con eso, el `.exe` compilado juega igual que el del release. Y si solo
-quieres usar JavaViva sin compilar nada, descarga el ZIP del release
-v1.0.2, que ya trae todo junto.
-
-## Ideas para v1.1 (si quieres seguir)
-- Probar con KEmulator nnmod como segundo motor para los juegos que
-  FreeJ2ME-Plus no corra.
-- Guardar partidas / savestates desde JavaViva y capturas en la biblioteca.
-- Versión web (FreeJ2ME-Plus Web) para jugar desde el navegador sin instalar.
-- App Android con J2ME-Loader (el mejor emulador J2ME en Android).
+El código fuente está en `src/` (C#, .NET 8, WinForms). Cómo compilarlo, el motor y las notas técnicas están en [docs/NOTAS-TECNICAS.md](docs/NOTAS-TECNICAS.md).
